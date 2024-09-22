@@ -19,7 +19,7 @@ class Group(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.group_id
+        return f"{self.group_name} (ID: {self.group_id})"
 
 
 class GroupMember(models.Model):

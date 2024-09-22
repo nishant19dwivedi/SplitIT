@@ -1,0 +1,37 @@
+{%extends "dashboard.html" %} {% block groupList %} {% for group in groups %}
+<div class="card" style="width: 18rem">
+  <div class="card-body">
+    <h5 class="card-title">{{group.group.group_name}}</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">
+      Created by:{{group.group.created_by}}
+    </h6>
+    <p class="card-text">{{group.group.group_description}}</p>
+    <input type="button" id="open" value="Open" class="btn btn-primary" />
+    {% if group.group.created_by == current_user %}
+    <input type="button" id="delete" value="Delete" class="btn btn-danger" />
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+<style>
+  .card {
+    background-color: white;
+    transition: background-color 0.2s;
+    transition: transform 0.2s;
+  }
+  .card:hover {
+    background-color: #ffcc00;
+    transform: scale(1.05);
+  }
+  .card:hover #open,
+  .card:hover #delete {
+    background-color: white;
+    color: black;
+  }
+  #open,
+  #delete {
+    background-color: #ffcc00;
+    border: none;
+  }
+</style>
+{% endblock %}

@@ -53,7 +53,9 @@ def signup(request):
 
 @login_required(login_url="login")
 def dashboard(request):
-    return render(request, "dashboard.html")
+    user = request.user
+    groups = GroupMember.objects.filter(user=user).select_related("group")
+    return render(request, "group_list.html", {"groups": groups, "current_user": user})
 
 
 @login_required(login_url="login")
@@ -84,3 +86,17 @@ def aboutus(request):
 def logout(request):
     auth_logout(request)
     return redirect("login")
+
+
+@login_required(login_url="login")
+def create_group(request):
+    if request.method == "POST":
+        name = request.POST.get("group-name")
+        description = request.POST.get("group-description")
+        print(name, description)
+        group = Group.objects.create(
+            group_name=name, group_description=description, created_by=request.user
+        )
+
+        GroupMember.objects.create(user=request.user, group=group)
+        return redirect("dashboard")

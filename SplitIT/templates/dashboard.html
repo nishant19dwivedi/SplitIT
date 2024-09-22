@@ -1,13 +1,21 @@
 {%extends "dashboard_base.html" %} {% block content %}
-<h1>Groups</h1>
-<button
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#exampleModal"
->
-  Create Group
-</button>
+<div id="group_header">
+  <h1>Groups</h1>
+  <button
+    type="button"
+    id="create-group"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  >
+    Create Group
+  </button>
+</div>
+
+<div id="groupList" class="hstack gap-3 flex-wrap">
+  {% block groupList %}{% endblock %}
+</div>
+
 <div
   class="modal fade"
   id="exampleModal"
@@ -21,11 +29,17 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Create Group</h1>
       </div>
       <div class="modal-body">
-        <form method="POST">
+        <form action="create_group" method="POST">
           {% csrf_token %}
           <div class="mb-3">
             <label for="group-name" class="col-form-label">Group Name:</label>
-            <input type="text" class="form-control" id="group-name" required />
+            <input
+              type="text"
+              class="form-control"
+              name="group-name"
+              id="group-name"
+              required
+            />
           </div>
           <div class="mb-3">
             <label for="group-description" class="col-form-label"
@@ -34,6 +48,7 @@
             <textarea
               class="form-control"
               id="group-description"
+              name="group-description"
               rows="3"
               required
             ></textarea>
@@ -45,7 +60,12 @@
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <input
+            type="submit"
+            class="btn btn-primary"
+            name="create_group"
+            value="Create Group"
+          />
         </form>
       </div>
     </div>
@@ -56,6 +76,20 @@
     font-size: xx-large;
     color: white;
   }
+  #group_header {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 45px;
+  }
+
+  #create-group {
+    background-color: #ffcc00;
+  }
+  #create-group:hover {
+    background-color: white;
+    color: black;
+  }
   .modal-header {
     background-color: black;
   }
@@ -64,6 +98,9 @@
   }
   .modal-content {
     border: white 2px solid;
+  }
+  #groupList {
+    padding: 20px;
   }
 </style>
 {% endblock %}
