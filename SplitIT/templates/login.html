@@ -1,11 +1,17 @@
 {%extends "base.html" %} {% block content %}
 <div class="login-container">
   <h1>Login</h1>
-  <form id="loginForm">
+  <form id="loginForm" method="POST" action="{% url 'login' %}">
     {% csrf_token %}
     <div class="input-group">
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" required />
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="johndoe@example.com"
+        required
+      />
     </div>
     <div class="input-group">
       <label for="password">Password</label>
@@ -15,7 +21,7 @@
   </form>
   <p>Don't have an account? <a href="/signup/">Sign up</a></p>
 </div>
-<div id="error-message">
+<div id="messages">
   {% if messages %}
   <ul>
     {% for message in messages %}
@@ -42,6 +48,7 @@
     width: 320px;
     box-shadow: 10px 10px 0 #000;
     text-align: center;
+    border-radius: 8px;
   }
 
   h1 {
@@ -50,6 +57,7 @@
   }
 
   .input-group {
+    width: 90%;
     margin-bottom: 20px;
     text-align: left;
   }
@@ -87,6 +95,14 @@
       width: 90%;
       padding: 30px;
     }
+  }
+  #messages {
+    color: rgb(94, 255, 0);
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
   }
 </style>
 {% endblock %}

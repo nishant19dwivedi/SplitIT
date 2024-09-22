@@ -1,0 +1,69 @@
+{%extends "dashboard_base.html" %} {% block content %}
+<h1>Groups</h1>
+<button
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+>
+  Create Group
+</button>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Group</h1>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="group-name" class="col-form-label">Group Name:</label>
+            <input type="text" class="form-control" id="group-name" required />
+          </div>
+          <div class="mb-3">
+            <label for="group-description" class="col-form-label"
+              >Group Description:</label
+            >
+            <textarea
+              class="form-control"
+              id="group-description"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  h1 {
+    font-size: xx-large;
+    color: white;
+  }
+  .modal-header {
+    background-color: black;
+  }
+  .modal-body {
+    background-color: #ffcc00;
+  }
+  .modal-content {
+    border: white 2px solid;
+  }
+</style>
+{% endblock %}

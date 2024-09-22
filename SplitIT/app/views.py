@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from .models import Group, GroupMember, Expense, ExpenseShare, Settle, Profile
 
 
 # Create your views here.
@@ -9,6 +12,18 @@ def home(request):
 
 
 def login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth_login(request, user)
+            return redirect("dashboard")
+        else:
+            messages.error(request, "Invalid username or password.")
+            return render(request, "login.html")
+
     return render(request, "login.html")
 
 
@@ -34,3 +49,38 @@ def signup(request):
         return redirect("login")
 
     return render(request, "signup.html")
+
+
+@login_required(login_url="login")
+def dashboard(request):
+    return render(request, "dashboard.html")
+
+
+@login_required(login_url="login")
+def profile(request):
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        profile.about = request.POST.get("about", profile.about)
+        profile.gender = request.POST.get("gender", profile.gender)
+        profile.save()
+        return redirect("profile")  # Redirect to the profile page after updating
+
+    context = {
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "about": profile.about,
+        "gender": profile.gender,
+    }
+    return render(request, "profile.html", context)
+
+
+def aboutus(request):
+    return render(request, "aboutus.html")
+
+
+def logout(request):
+    auth_logout(request)
+    return redirect("login")
