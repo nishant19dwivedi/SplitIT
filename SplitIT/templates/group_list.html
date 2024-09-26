@@ -1,12 +1,18 @@
 {%extends "dashboard.html" %} {% block groupList %} {% for group in groups %}
-<div class="card" style="width: 18rem">
+<div class="card" style="width: 16rem">
   <div class="card-body">
     <h5 class="card-title">{{group.group.group_name}}</h5>
     <h6 class="card-subtitle mb-2 text-body-secondary">
       Created by:{{group.group.created_by}}
     </h6>
     <p class="card-text">{{group.group.group_description}}</p>
-    <input type="button" id="open" value="Open" class="btn btn-primary" />
+
+    <form action="{% url 'group' %}" method="POST" style="display: inline">
+      {% csrf_token %}
+      <input type="hidden" name="group_id" value="{{ group.group.group_id }}" />
+      <button type="submit" id="open" class="btn btn-primary">Open</button>
+    </form>
+
     {% if group.group.created_by == current_user %}
     <input type="button" id="delete" value="Delete" class="btn btn-danger" />
     {% endif %}

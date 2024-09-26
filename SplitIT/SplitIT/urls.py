@@ -29,4 +29,7 @@ urlpatterns = [
     path("logout/", views.logout, name="logout"),
     path("profile/", views.profile, name="profile"),
     path("dashboard/create_group", views.create_group, name="create_group"),
+    path("group/", views.group, name="group"),
+    path("group/expense", views.expense, name="expense"),
+    path("group/add_member", views.add_member, name="add_member"),
 ]

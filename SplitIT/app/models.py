@@ -58,7 +58,9 @@ class ExpenseShare(models.Model):
 
 
 class Settle(models.Model):
-    expense = models.OneToOneField(Expense, on_delete=models.CASCADE, primary_key=True)
+    expense = models.OneToOneField(
+        ExpenseShare, on_delete=models.CASCADE, primary_key=True
+    )
     settled = models.BooleanField(default=False)
 
     def __str__(self):
