@@ -27,28 +27,31 @@
 </div>
 
 <div id="row-header" class="row g-0">
-  <div class="col-sm-6 col-md-8">Expense Details</div>
-  <div class="col-6 col-md-4">Spent</div>
+  <div class="col-sm-4 col-md-6">Expense Details</div>
+  <div class="col-sm-2 col-md-4">Spent</div>
+  <div class="col-sm-2 col-md-2">Shared by</div>
 </div>
-
 <div id="expense-list" class="vstack gap-3">
-  {%for expense in expenses%}
-  <div id="expense-details" class="dropdown-center">
-    <div id="row" class="row g-0">
-      <div class="col-sm-6 col-md-8">{{expense.description}}</div>
-      <div class="col-6 col-md-4">
-        {{expense.amount}} paid by {% if expense.user == user %} you {% else %}
-        {{expense.user}} {% endif %}
+  {% for expense in expenses %}
+  <div id="row" class="row g-0">
+    <div class="col-sm-4 col-md-6 align-items-center">
+      {{ expense.description }}
+    </div>
+    <div class="col-sm-2 col-md-4 align-items-center">
+      {{ expense.amount }} paid by {% if expense.user == user %} you {% else %}
+      {{ expense.user }} {% endif %}
+    </div>
+    <div id="share-list" class="col-sm-2 col-md-2">
+      <div class="share-item-container">
+        <ul class="share-list">
+          {% for share in expense.expenseshare_set.all %}
+          <li>{{ share.user.first_name }}</li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
-    <div class="dropdown-content">
-      {% for share in expense.expenseshare_set.all %}
-      <li>{{ share.user.username }}: {{ share.share }}</li>
-      {% endfor %}
-    </div>
   </div>
-
-  {%endfor%}
+  {% endfor %}
 </div>
 
 <div
@@ -247,6 +250,7 @@
     border-radius: 5px;
     padding: 5px;
     transition: transform 0.2s;
+    align-items: center;
   }
   #row:hover {
     background-color: #ffcc00;
@@ -266,22 +270,12 @@
     height: 150px;
     overflow-y: auto;
   }
-  .dropdown-content {
-    background-color: #ffcc00;
-    display: none;
-    z-index: 1;
-    left: 80%;
-    white-space: nowrap;
-    transition: 0.2s;
+  #share-list .share-item-container {
+    height: 40px;
+    overflow-y: auto;
   }
-  .dropdown-content li {
-    color: black;
-    list-style-type: none;
-    border: none;
-    background-color: #ffcc00;
-  }
-  #expense-details:hover .dropdown-content {
-    display: block;
+  .description-wrapper {
+    align-items: center;
   }
 </style>
 

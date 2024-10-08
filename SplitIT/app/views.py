@@ -175,3 +175,14 @@ def add_member(request):
         return redirect("group")
     else:
         return HttpResponse("Invalid request method.", status=400)
+
+
+@login_required(login_url="login")
+def delete_group(request):
+    if request.method == "POST":
+        group_id = request.POST.get("group_id")
+        group = get_object_or_404(Group, group_id=int(group_id))
+        group.delete()
+        return redirect("dashboard")
+    else:
+        return HttpResponse("Invalid request method.", status=400)
